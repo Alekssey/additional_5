@@ -1,64 +1,20 @@
 module.exports = function check(str, bracketsConfig) {
   // your solution
-    let array = str.split('');
-    let left_mass = [];
-    let rez_mass = [];
-    let count, tf = 0;
-    let obj = {};
-    let left = 0, right = 0;
-    let flag = true;
+    str = str.split('');
+    for (let i = 0; i < bracketsConfig.length; i++) {
+        for (let j = 0; j < str.length; j++) {
 
-    for(let i = 0; i < bracketsConfig.length; i++){
-        obj[bracketsConfig[i][0]] = bracketsConfig[i][1];
-    }
-
-    for(let i = 0; i < array.length; i++){
-        for(let val in obj){
-            if(array[i] == val && array[i] == obj[val]){
-                if(flag == true){
-                    left_mass.push(array[i]);
-                    flag = false;
-                    left++;
-                } else if(flag == false){
-                    left_mass.push(' ');
-                    flag = true;
-                    right++;
-                }
-            }else if(array[i] == val && array[i] != obj[val]){
-                left_mass.push(array[i]);
-                left++;
-            } else if(array[i] == obj[val] && array[i] != val){
-                left_mass.push(' ');
-                right++;
+            if (bracketsConfig[i][0] == str[j] && str[j + 1] == bracketsConfig[i][1]) {
+                str.splice(j, 2);
+                i=0;
+                j = -1;
             }
         }
     }
-
-    if(left != right){
+    if (str.length != 0) {
         return false;
     }
-
-    for(let i = 0; i < left_mass.length; i++){
-        if(left_mass[i] != ' '){
-            rez_mass.push(obj[left_mass[i]]);
-            count = rez_mass.length - 1;
-        } else if(left_mass[i] == ' '){
-            left_mass.splice(i,1,rez_mass[count]);
-            rez_mass.splice(count,1);
-            count--;
-        }
-    }
-
-    for(let i = 0; i < left_mass.length; i++){
-        if(left_mass[i] == array[i])
-        {
-            tf++;
-        }
-    }
-    if (tf == left_mass.length){
+    else {
         return true;
-    } else {
-        return false;
     }
-
 }
